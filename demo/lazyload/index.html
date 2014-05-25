@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>lazyload</title>
+  <style>
+    @-webkit-keyframes reveal {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .reveal {
+      -webkit-animation: reveal .5s;
+      animation: reveal .5s;
+    }
+  </style>
+</head>
+<body>
+  <script src="dist/demo.js"></script>
+</body>
+</html>

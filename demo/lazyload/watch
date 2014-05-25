@@ -1,0 +1,3 @@
+#!/bin/bash
+
+watchify src/demo.js -o dist/demo.js -v

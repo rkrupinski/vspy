@@ -1,0 +1,20 @@
+{
+  "name": "vspy",
+  "version": "0.0.0",
+  "description": "A simple viewport spy.",
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rkrupinski/vspy.git"
+  },
+  "author": "Rafał Krupiński",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.6.2",
+    "gulp-jshint": "^1.6.1",
+    "jshint-stylish": "^0.2.0"
+  },
+  "dependencies": {
+    "uniq": "^1.0.0"
+  }
+}
