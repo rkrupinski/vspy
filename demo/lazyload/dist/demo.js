@@ -118,8 +118,6 @@ function handleScroll() {
   }
 
   !this._targets.length && this._unsubscribe();
-
-  console.log(1);
 }
 
 function create(callback) {
