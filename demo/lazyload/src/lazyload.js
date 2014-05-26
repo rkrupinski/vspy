@@ -11,7 +11,7 @@ function callback(img) {
   tmp = new Image();
   tmp.onload = function () {
     img.src = url;
-    img.className += ' reveal';
+    img.classList.add('reveal');
     tmp = null;
   };
   tmp.src = url;

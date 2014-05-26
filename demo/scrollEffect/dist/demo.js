@@ -1,47 +1,34 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var lazyload = require('./lazyload')
+var effect = require('./effect')
   , frag = document.createDocumentFragment()
-  , img
+  , div
   , i;
 
 for (i = 0; i < 100; i++) {
-  img = new Image();
-  img.width = 500;
-  img.height = 500;
-  img.className = 'js_lazyload';
-  img.src = 'http://dummyimage.com/500x500/fff/000.jpg&text=placeholder';
-  img.setAttribute('data-src',
-      'http://dummyimage.com/500x500/000/fff.jpg&text=image ' + (i + 1));
-  frag.appendChild(img);
+  div = document.createElement('div');
+  div.className = 'div js_div';
+  div.style.height = Math.ceil(Math.random() * 300) + 100 + 'px';
+  frag.appendChild(div);
 }
 
 document.body.appendChild(frag);
 
-lazyload.observe(document.querySelectorAll('.js_lazyload'));
+effect.observe(document.querySelectorAll('.js_div'));
 
-},{"./lazyload":2}],2:[function(require,module,exports){
+},{"./effect":2}],2:[function(require,module,exports){
 'use strict';
 
 var spy = require('../../../lib/index')(callback);
 
-function callback(img) {
-  var url = img.getAttribute('data-src')
-    , tmp;
-
-  if (!url) return;
-
-  tmp = new Image();
-  tmp.onload = function () {
-    img.src = url;
-    img.classList.add('reveal');
-    tmp = null;
-  };
-  tmp.src = url;
+function callback(element) {
+  element.classList.add('reveal');
+  element.style.color = '#' + Math.round(Math.random() * 200 +
+      55).toString(16) + '0000';
 }
 
-module.exports = spy; 
+module.exports = spy;
 
 },{"../../../lib/index":4}],3:[function(require,module,exports){
 'use strict';
