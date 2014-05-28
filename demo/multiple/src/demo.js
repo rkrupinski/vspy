@@ -10,14 +10,14 @@ var vspy = require('../../../lib/index')
 
 function callback() {
   /*jshint validthis:true*/
-  this.innerText = Number(this.innerText) + 1;
+  this.innerHTML = Number(this.innerHTML) + 1;
 }
 
 while (squaresCount--) {
-  type = Math.random() > 0.5 ? 'a' : 'b';
+  type = (Math.random() > 0.5 ? 'a' : 'b');
   square = document.createElement('div');
   square.className = 'square js_square-' + type;
-  square.innerText = type;
+  square.innerHTML = type;
   frag.appendChild(square);
 }
 
