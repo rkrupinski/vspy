@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>multiple demo</title>
+  <style>
+    .counters {
+      margin: 0;
+      position: fixed;
+      left: 1em;
+      top: 1em;
+    }
+
+    .counters dt,
+    .counters dd {
+      display: inline;
+    }
+
+    .counters dd {
+      margin: 0;
+    }
+
+    .counters dd::after {
+      content: '\A';
+      white-space: pre;
+    }
+
+    .square {
+      width: 500px;
+      height: 500px;
+      margin: 20px auto;
+      font-size: 300px;
+      line-height: 500px;
+      text-align: center;
+      text-transform: uppercase;
+      color: white;
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <dl class="counters">
+    <dt>A:</dt>
+    <dd class="js_counter-a">0</dd>
+    <dt>B:</dt>
+    <dd class="js_counter-b">0</dd>
+  </dl>
+  <script src="dist/demo.js"></script>
+</body>
+</html>

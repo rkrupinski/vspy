@@ -1,36 +1,33 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var effect = require('./effect')
+var vspy = require('../../../lib/index')
+  , spyA = vspy(callback.bind(document.querySelector('.js_counter-a')))
+  , spyB = vspy(callback.bind(document.querySelector('.js_counter-b')))
   , frag = document.createDocumentFragment()
-  , div
-  , i;
+  , squaresCount = 100
+  , square
+  , type;
 
-for (i = 0; i < 100; i++) {
-  div = document.createElement('div');
-  div.className = 'div js_div';
-  div.style.height = Math.ceil(Math.random() * 300) + 100 + 'px';
-  frag.appendChild(div);
+function callback() {
+  /*jshint validthis:true*/
+  this.innerText = Number(this.innerText) + 1;
+}
+
+while (squaresCount--) {
+  type = Math.random() > 0.5 ? 'a' : 'b';
+  square = document.createElement('div');
+  square.className = 'square js_square-' + type;
+  square.innerText = type;
+  frag.appendChild(square);
 }
 
 document.body.appendChild(frag);
 
-effect.observe(document.querySelectorAll('.js_div'));
+spyA.observe(document.querySelectorAll('.js_square-a'));
+spyB.observe(document.querySelectorAll('.js_square-b'));
 
-},{"./effect":2}],2:[function(require,module,exports){
-'use strict';
-
-var spy = require('../../../lib/index')(callback);
-
-function callback(element) {
-  element.classList.add('reveal');
-  element.style.color = '#' + Math.round(Math.random() * 200 +
-      55).toString(16) + '0000';
-}
-
-module.exports = spy;
-
-},{"../../../lib/index":4}],3:[function(require,module,exports){
+},{"../../../lib/index":3}],2:[function(require,module,exports){
 'use strict';
 
 function inViewport(element) {
@@ -42,7 +39,7 @@ function inViewport(element) {
 
 module.exports = inViewport;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var uniq       = require('uniq')
@@ -124,7 +121,7 @@ function create(callback) {
 
 module.exports = create;
 
-},{"./inViewport":3,"./isVisible":5,"./trigger":6,"uniq":7}],5:[function(require,module,exports){
+},{"./inViewport":2,"./isVisible":4,"./trigger":5,"uniq":6}],4:[function(require,module,exports){
 'use strict';
 
 function isVisible(element) {
@@ -133,7 +130,7 @@ function isVisible(element) {
 
 module.exports = isVisible;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 function trigger(element, type) {
@@ -144,7 +141,7 @@ function trigger(element, type) {
 
 module.exports = trigger;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict"
 
 function unique_pred(list, compare) {

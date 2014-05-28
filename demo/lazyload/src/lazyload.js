@@ -6,7 +6,9 @@ function callback(img) {
   var url = img.getAttribute('data-src')
     , tmp;
 
-  if (!url) return;
+  if (!url) {
+    return;
+  }
 
   tmp = new Image();
   tmp.onload = function () {
