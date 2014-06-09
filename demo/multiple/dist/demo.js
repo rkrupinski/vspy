@@ -30,11 +30,12 @@ spyB.observe(document.querySelectorAll('.js_square-b'));
 },{"../../../lib/index":3}],2:[function(require,module,exports){
 'use strict';
 
-function inViewport(element) {
-  var rect = element.getBoundingClientRect();
+function inViewport(element, offset) {
+  var rect = element.getBoundingClientRect()
+    , o = offset || 0;
 
-  return rect.top > -rect.height && 
-      rect.bottom < window.innerHeight + rect.height;
+  return rect.top > -rect.height - o && 
+      rect.bottom < window.innerHeight + rect.height + o;
 }
 
 module.exports = inViewport;
@@ -92,7 +93,11 @@ function handleScroll() {
   while (i--) {
     current = this._targets[i];
 
-    if (!isVisible(current) || !inViewport(current)) {
+    if (!isVisible(current)) {
+      continue;
+    }
+
+    if (!inViewport(current, this._options.offset)) {
       continue;
     }
 
@@ -107,10 +112,11 @@ function handleScroll() {
   !this._targets.length && this._unsubscribe();
 }
 
-function create(callback) {
+function create(callback, options) {
   var inst = Object.create(proto);
 
   inst._callback = callback;
+  inst._options = options || {};
   inst._targets = [];
   inst._flag = '__vspy' + Date.now();
   inst._handleScroll = window.requestAnimationFrame.bind(
