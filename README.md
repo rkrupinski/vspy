@@ -1,24 +1,25 @@
 vspy
 ====
-
 A simple viewport spy.
 
-Usage:
-------
-
-Factory. Accepts `callback` function as a parameter.
+Usage
+-----
+Factory - accepts `2` parameters: a `callback` and an optional `options` object.
 ```js
-var spy = require('vspy')(callback);
-```
+var spy = require('vspy')(callback /*, [options] */);
 
-Callback function. Called once for each `element`; right after it reaches the viewport. After that, `element` gets removed from the pool.
-```js
 function callback(element) {
   // do stuff
 }
 ```
 
-Methods: `observe()`. Adds elements to the pool. Dupplicates and previously handled elements are removed. It accepts instances of `Element`, `NodeList` and `Array`.
+Callback function - called once for each `element`, right after it reaches the viewport. After that, `element` gets removed from the pool.
+
+Options:
+- `offset` - define a custom scroll offset (top/bottom)
+
+Methods: 
+- `observe` - adds elements to the pool. Dupplicates and previously handled elements are removed. It accepts instances of `Element`, `NodeList` and `Array`.
 ```js
 spy.observe(document.querySelectorAll('.foo'));
 ```
@@ -30,7 +31,10 @@ Examples
 
 Installation
 ------------
-
 ```bash
 $ npm install vspy
 ```
+
+Browser support
+---------------
+IE9+
