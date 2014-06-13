@@ -43,42 +43,56 @@ module.exports = inViewport;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var uniq       = require('uniq')
-  , trigger    = require('./trigger')
+var unique     = require('./util/unique')
+  , trigger    = require('./util/trigger')
+  , raf        = require('./util/raf')
   , isVisible  = require('./isVisible')
-  , inViewport = require('./inViewport') 
-  , slice      = [].slice;
+  , inViewport = require('./inViewport');
 
 var proto = {
 
   _subscribe: function () {
-    window.addEventListener('scroll', this._handleScroll);
+    window.addEventListener('scroll',
+        this._handleScroll);
   },
 
   _unsubscribe: function () {
-    window.removeEventListener('scroll', this._handleScroll);
+    window.removeEventListener('scroll',
+        this._handleScroll);
   },
 
-  observe: function (targets) {
+  observe: function (target) {
+    var targetArr = [];
+
     switch (true) {
-      case (targets instanceof NodeList):
-        targets = slice.call(targets);
+      case Array.isArray(target):
+        targetArr = target;
         break;
-      case (targets instanceof Element):
-        targets = [targets];
+      case (target instanceof NodeList):
+        targetArr = [].slice.call(target);
+        break;
+      case (target instanceof Element):
+        targetArr.push(target);
         break;
     }
 
-    if (targets.length) {
+    targetArr = targetArr.filter(function (el) {
+      return !el[this._flag];
+    }, this);
+
+    if (targetArr.length) {
       !this._targets.length && this._subscribe();
-
-      this._targets = uniq(this._targets.concat(targets))
-          .filter(function (target) {
-            return !target[this._flag];
-          }, this);
-
+      this._targets = unique(this._targets.concat(targetArr));
+      targetArr = null;
       trigger(window, 'scroll');
     }
+
+    return this;
+  },
+
+  prune: function () {
+    this._targets = this._targets.filter(
+      document.contains.bind(document));
 
     return this;
   }
@@ -102,7 +116,8 @@ function handleScroll() {
     }
 
     Object.defineProperty(current, this._flag, {
-      value: true
+      value: true,
+      configurable: true
     });
 
     this._targets.splice(i, 1);
@@ -119,15 +134,15 @@ function create(callback, options) {
   inst._options = options || {};
   inst._targets = [];
   inst._flag = '__vspy' + Date.now();
-  inst._handleScroll = window.requestAnimationFrame.bind(
-      window, handleScroll.bind(inst));
+  inst._handleScroll = raf.bind(window,
+      handleScroll.bind(inst));
 
   return inst;
 }
 
 module.exports = create;
 
-},{"./inViewport":2,"./isVisible":4,"./trigger":5,"uniq":6}],4:[function(require,module,exports){
+},{"./inViewport":2,"./isVisible":4,"./util/raf":5,"./util/trigger":6,"./util/unique":7}],4:[function(require,module,exports){
 'use strict';
 
 function isVisible(element) {
@@ -139,6 +154,16 @@ module.exports = isVisible;
 },{}],5:[function(require,module,exports){
 'use strict';
 
+var raf = window.requestAnimationFrame ||
+    function (callback) {
+      window.setTimeout(callback, 1000 / 60);
+    };
+
+module.exports = raf;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
 function trigger(element, type) {
   var ev = new Event(type);
 
@@ -147,62 +172,21 @@ function trigger(element, type) {
 
 module.exports = trigger;
 
-},{}],6:[function(require,module,exports){
-"use strict"
+},{}],7:[function(require,module,exports){
+'use strict';
 
-function unique_pred(list, compare) {
-  var ptr = 1
-    , len = list.length
-    , a=list[0], b=list[0]
-  for(var i=1; i<len; ++i) {
-    b = a
-    a = list[i]
-    if(compare(a, b)) {
-      if(i === ptr) {
-        ptr++
-        continue
-      }
-      list[ptr++] = a
-    }
+function unique(arr) {
+  var result = []
+    , l = arr.length
+    , i;
+
+  for (i = 0; i < l; i++) {
+    !~result.indexOf(arr[i]) && result.push(arr[i]);
   }
-  list.length = ptr
-  return list
+
+  return result;
 }
 
-function unique_eq(list) {
-  var ptr = 1
-    , len = list.length
-    , a=list[0], b = list[0]
-  for(var i=1; i<len; ++i, b=a) {
-    b = a
-    a = list[i]
-    if(a !== b) {
-      if(i === ptr) {
-        ptr++
-        continue
-      }
-      list[ptr++] = a
-    }
-  }
-  list.length = ptr
-  return list
-}
+module.exports = unique;
 
-function unique(list, compare, sorted) {
-  if(list.length === 0) {
-    return []
-  }
-  if(compare) {
-    if(!sorted) {
-      list.sort(compare)
-    }
-    return unique_pred(list, compare)
-  }
-  if(!sorted) {
-    list.sort()
-  }
-  return unique_eq(list)
-}
-
-module.exports = unique
 },{}]},{},[1])
