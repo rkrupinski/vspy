@@ -18,4 +18,4 @@ for (i = 0; i < 100; i++) {
 
 document.body.appendChild(frag);
 
-lazyload.observe(document.querySelectorAll('.js_lazyload'));
+lazyload.observe('.js_lazyload');

@@ -24,8 +24,8 @@ while (squaresCount--) {
 
 document.body.appendChild(frag);
 
-spyA.observe(document.querySelectorAll('.js_square-a'));
-spyB.observe(document.querySelectorAll('.js_square-b'));
+spyA.observe('.js_square-a');
+spyB.observe('.js_square-b');
 
 },{"../../../lib/index":3}],2:[function(require,module,exports){
 'use strict';
@@ -47,7 +47,8 @@ var unique     = require('./util/unique')
   , trigger    = require('./util/trigger')
   , raf        = require('./util/raf')
   , isVisible  = require('./isVisible')
-  , inViewport = require('./inViewport');
+  , inViewport = require('./inViewport')
+  , slice      = [].slice;
 
 var proto = {
 
@@ -62,28 +63,13 @@ var proto = {
   },
 
   observe: function (target) {
-    var targetArr = [];
-
-    switch (true) {
-      case Array.isArray(target):
-        targetArr = target;
-        break;
-      case (target instanceof NodeList):
-        targetArr = [].slice.call(target);
-        break;
-      case (target instanceof Element):
-        targetArr.push(target);
-        break;
-    }
-
-    targetArr = targetArr.filter(function (el) {
+    var targetArr = normalize(target).filter(function (el) {
       return !el[this._flag];
     }, this);
 
     if (targetArr.length) {
       !this._targets.length && this._subscribe();
       this._targets = unique(this._targets.concat(targetArr));
-      targetArr = null;
       trigger(window, 'scroll');
     }
 
@@ -92,12 +78,38 @@ var proto = {
 
   prune: function () {
     this._targets = this._targets.filter(
+      // remove detached nodes
       document.contains.bind(document));
 
     return this;
   }
 
 };
+
+function normalize(target) {
+  var result = [];
+
+  switch (true) {
+    case (typeof target === 'string'):
+      try {
+        result = slice.call(document.querySelectorAll(target));
+      } catch (err) {
+        // invalid selector
+      }
+      break;
+    case (target instanceof NodeList):
+      result = slice.call(target);
+      break;
+    case (target instanceof Element):
+      result.push(target);
+      break;
+    case Array.isArray(target):
+      result = target;
+      break;
+  }
+
+  return result;
+}
 
 function handleScroll() {
   /*jshint validthis:true*/

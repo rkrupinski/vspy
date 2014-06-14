@@ -23,5 +23,5 @@ while (squaresCount--) {
 
 document.body.appendChild(frag);
 
-spyA.observe(document.querySelectorAll('.js_square-a'));
-spyB.observe(document.querySelectorAll('.js_square-b'));
+spyA.observe('.js_square-a');
+spyB.observe('.js_square-b');
