@@ -76,6 +76,14 @@ var proto = {
     return this;
   },
 
+  reset: function (target) {
+    normalize(target).forEach(function (el) {
+      delete el[this._flag];
+    }, this);
+
+    return this;
+  },
+
   prune: function () {
     this._targets = this._targets.filter(
       // remove detached nodes
