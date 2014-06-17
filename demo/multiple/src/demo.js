@@ -1,6 +1,6 @@
 'use strict';
 
-var vspy = require('../../../lib/index')
+var vspy = require('../../../index')
   , spyA = vspy(callback.bind(document.querySelector('.js_counter-a')))
   , spyB = vspy(callback.bind(document.querySelector('.js_counter-b')))
   , frag = document.createDocumentFragment()

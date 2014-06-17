@@ -24,7 +24,7 @@ lazyload.observe('.js_lazyload');
 },{"./lazyload":2}],2:[function(require,module,exports){
 'use strict';
 
-var vspy = require('../../../lib/index')
+var vspy = require('../../../index')
   , spy = vspy(callback, { offset: 150 });
 
 function callback(img) {
@@ -46,7 +46,12 @@ function callback(img) {
 
 module.exports = spy; 
 
-},{"../../../lib/index":4}],3:[function(require,module,exports){
+},{"../../../index":3}],3:[function(require,module,exports){
+'use strict';
+
+module.exports = require('./lib/vspy');
+
+},{"./lib/vspy":9}],4:[function(require,module,exports){
 'use strict';
 
 function inViewport(element, offset) {
@@ -59,7 +64,54 @@ function inViewport(element, offset) {
 
 module.exports = inViewport;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
+'use strict';
+
+function isVisible(element) {
+  return element.offsetWidth > 0 || element.offsetHeight > 0;
+}
+
+module.exports = isVisible;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+var raf = window.requestAnimationFrame ||
+    function (callback) {
+      window.setTimeout(callback, 1000 / 60);
+    };
+
+module.exports = raf;
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+function trigger(element, type) {
+  var ev = new Event(type);
+
+  element.dispatchEvent(ev);
+}
+
+module.exports = trigger;
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+function unique(arr) {
+  var result = []
+    , l = arr.length
+    , i;
+
+  for (i = 0; i < l; i++) {
+    !~result.indexOf(arr[i]) && result.push(arr[i]);
+  }
+
+  return result;
+}
+
+module.exports = unique;
+
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var unique     = require('./util/unique')
@@ -181,51 +233,4 @@ function create(callback, options) {
 
 module.exports = create;
 
-},{"./inViewport":3,"./isVisible":5,"./util/raf":6,"./util/trigger":7,"./util/unique":8}],5:[function(require,module,exports){
-'use strict';
-
-function isVisible(element) {
-  return element.offsetWidth > 0 || element.offsetHeight > 0;
-}
-
-module.exports = isVisible;
-
-},{}],6:[function(require,module,exports){
-'use strict';
-
-var raf = window.requestAnimationFrame ||
-    function (callback) {
-      window.setTimeout(callback, 1000 / 60);
-    };
-
-module.exports = raf;
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-function trigger(element, type) {
-  var ev = new Event(type);
-
-  element.dispatchEvent(ev);
-}
-
-module.exports = trigger;
-
-},{}],8:[function(require,module,exports){
-'use strict';
-
-function unique(arr) {
-  var result = []
-    , l = arr.length
-    , i;
-
-  for (i = 0; i < l; i++) {
-    !~result.indexOf(arr[i]) && result.push(arr[i]);
-  }
-
-  return result;
-}
-
-module.exports = unique;
-
-},{}]},{},[1])
+},{"./inViewport":4,"./isVisible":5,"./util/raf":6,"./util/trigger":7,"./util/unique":8}]},{},[1])

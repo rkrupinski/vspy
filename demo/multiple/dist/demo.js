@@ -1,7 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var vspy = require('../../../lib/index')
+var vspy = require('../../../index')
   , spyA = vspy(callback.bind(document.querySelector('.js_counter-a')))
   , spyB = vspy(callback.bind(document.querySelector('.js_counter-b')))
   , frag = document.createDocumentFragment()
@@ -27,7 +27,12 @@ document.body.appendChild(frag);
 spyA.observe('.js_square-a');
 spyB.observe('.js_square-b');
 
-},{"../../../lib/index":3}],2:[function(require,module,exports){
+},{"../../../index":2}],2:[function(require,module,exports){
+'use strict';
+
+module.exports = require('./lib/vspy');
+
+},{"./lib/vspy":8}],3:[function(require,module,exports){
 'use strict';
 
 function inViewport(element, offset) {
@@ -40,7 +45,54 @@ function inViewport(element, offset) {
 
 module.exports = inViewport;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
+'use strict';
+
+function isVisible(element) {
+  return element.offsetWidth > 0 || element.offsetHeight > 0;
+}
+
+module.exports = isVisible;
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+var raf = window.requestAnimationFrame ||
+    function (callback) {
+      window.setTimeout(callback, 1000 / 60);
+    };
+
+module.exports = raf;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+function trigger(element, type) {
+  var ev = new Event(type);
+
+  element.dispatchEvent(ev);
+}
+
+module.exports = trigger;
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+function unique(arr) {
+  var result = []
+    , l = arr.length
+    , i;
+
+  for (i = 0; i < l; i++) {
+    !~result.indexOf(arr[i]) && result.push(arr[i]);
+  }
+
+  return result;
+}
+
+module.exports = unique;
+
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var unique     = require('./util/unique')
@@ -162,51 +214,4 @@ function create(callback, options) {
 
 module.exports = create;
 
-},{"./inViewport":2,"./isVisible":4,"./util/raf":5,"./util/trigger":6,"./util/unique":7}],4:[function(require,module,exports){
-'use strict';
-
-function isVisible(element) {
-  return element.offsetWidth > 0 || element.offsetHeight > 0;
-}
-
-module.exports = isVisible;
-
-},{}],5:[function(require,module,exports){
-'use strict';
-
-var raf = window.requestAnimationFrame ||
-    function (callback) {
-      window.setTimeout(callback, 1000 / 60);
-    };
-
-module.exports = raf;
-
-},{}],6:[function(require,module,exports){
-'use strict';
-
-function trigger(element, type) {
-  var ev = new Event(type);
-
-  element.dispatchEvent(ev);
-}
-
-module.exports = trigger;
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-function unique(arr) {
-  var result = []
-    , l = arr.length
-    , i;
-
-  for (i = 0; i < l; i++) {
-    !~result.indexOf(arr[i]) && result.push(arr[i]);
-  }
-
-  return result;
-}
-
-module.exports = unique;
-
-},{}]},{},[1])
+},{"./inViewport":3,"./isVisible":4,"./util/raf":5,"./util/trigger":6,"./util/unique":7}]},{},[1])
