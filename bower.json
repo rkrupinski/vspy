@@ -1,0 +1,6 @@
+{
+  "name": "vspy",
+  "devDependencies": {
+    "normalize-css": "~3.0.1"
+  }
+}

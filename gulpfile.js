@@ -3,8 +3,8 @@
 var gulp = require('gulp')
   , jshint = require('gulp-jshint')
   , karma = require('karma').server
-  , browserify = require('gulp-browserify')
   , clean = require('gulp-clean')
+  , browserify = require('gulp-browserify')
   , karmaConfig = require('./karma.conf');
 
 gulp.task('jshint', function () {
