@@ -4,6 +4,8 @@ var vspy = require('../index')
   , fixture = require('./helpers/fixture');
 
 describe('vspy', function () {
+  var foo
+    , callback = jasmine.createSpy('vspy callback');
 
   beforeEach(function (done) {
     fixture('test.html', function (html) {

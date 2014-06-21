@@ -2,19 +2,23 @@
 
 module.exports = {
   browsers: [
-    'PhantomJS'
+    // 'PhantomJS'
+    'Chrome',
+    'Firefox',
+    'Opera',
+    'Safari'
   ],
   frameworks: [
     'jasmine'
   ],
   files: [
+    'bower_components/normalize-css/normalize.css',
+    'test/styles/test.css',
+
+    // https://groups.google.com/forum/#!msg/phantomjs/r0hPOmnCUpc/uxusqsl2LNoJ
+    // 'test/helpers/bind.js',
+
     '.tmp/test/*.js',
-    {
-      pattern: 'bower_components/normalize-css/normalize.css',
-      watched: false,
-      served: true,
-      included: true
-    },
     {
       pattern: 'test/fixtures/*.html',
       watched: false,
