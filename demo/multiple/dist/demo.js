@@ -32,7 +32,7 @@ spyB.observe('.js_square-b');
 
 module.exports = require('./lib/vspy');
 
-},{"./lib/vspy":7}],3:[function(require,module,exports){
+},{"./lib/vspy":8}],3:[function(require,module,exports){
 'use strict';
 
 function inViewport(element, offset) {
@@ -57,6 +57,38 @@ module.exports = isVisible;
 },{}],5:[function(require,module,exports){
 'use strict';
 
+var slice = [].slice;
+
+function normalize(target) {
+  var result = [];
+
+  switch (true) {
+    case (typeof target === 'string'):
+      try {
+        result = slice.call(document.querySelectorAll(target));
+      } catch (err) {
+        // invalid selector
+      }
+      break;
+    case (target instanceof NodeList):
+      result = slice.call(target);
+      break;
+    case (target instanceof Element):
+      result.push(target);
+      break;
+    case Array.isArray(target):
+      result = target;
+      break;
+  }
+
+  return result;
+}
+
+module.exports = normalize;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
 var raf = window.requestAnimationFrame ||
     function (callback) {
       window.setTimeout(callback, 1000 / 60);
@@ -64,7 +96,7 @@ var raf = window.requestAnimationFrame ||
 
 module.exports = raf;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 function unique(arr) {
@@ -81,14 +113,14 @@ function unique(arr) {
 
 module.exports = unique;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var unique     = require('./util/unique')
   , raf        = require('./util/raf')
+  , normalize  = require('./util/normalize')
   , isVisible  = require('./isVisible')
-  , inViewport = require('./inViewport')
-  , slice      = [].slice;
+  , inViewport = require('./inViewport');
 
 var proto = {
 
@@ -134,31 +166,6 @@ var proto = {
 
 };
 
-function normalize(target) {
-  var result = [];
-
-  switch (true) {
-    case (typeof target === 'string'):
-      try {
-        result = slice.call(document.querySelectorAll(target));
-      } catch (err) {
-        // invalid selector
-      }
-      break;
-    case (target instanceof NodeList):
-      result = slice.call(target);
-      break;
-    case (target instanceof Element):
-      result.push(target);
-      break;
-    case Array.isArray(target):
-      result = target;
-      break;
-  }
-
-  return result;
-}
-
 function handleScroll() {
   /*jshint validthis:true*/
   var i = this._targets.length
@@ -202,4 +209,4 @@ function create(callback, options) {
 
 module.exports = create;
 
-},{"./inViewport":3,"./isVisible":4,"./util/raf":5,"./util/unique":6}]},{},[1])
+},{"./inViewport":3,"./isVisible":4,"./util/normalize":5,"./util/raf":6,"./util/unique":7}]},{},[1])
