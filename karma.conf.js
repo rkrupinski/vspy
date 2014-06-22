@@ -13,6 +13,7 @@ module.exports = {
   files: [
     'bower_components/normalize-css/normalize.css',
     'test/styles/test.css',
+    'test/helpers/dom.js',
     '.tmp/test/*.js',
     {
       pattern: 'test/fixtures/*.html',
