@@ -51,7 +51,7 @@ module.exports = spy;
 
 module.exports = require('./lib/vspy');
 
-},{"./lib/vspy":9}],4:[function(require,module,exports){
+},{"./lib/vspy":8}],4:[function(require,module,exports){
 'use strict';
 
 function inViewport(element, offset) {
@@ -86,17 +86,6 @@ module.exports = raf;
 },{}],7:[function(require,module,exports){
 'use strict';
 
-function trigger(element, type) {
-  var ev = new Event(type);
-
-  element.dispatchEvent(ev);
-}
-
-module.exports = trigger;
-
-},{}],8:[function(require,module,exports){
-'use strict';
-
 function unique(arr) {
   var result = []
     , l = arr.length
@@ -111,11 +100,10 @@ function unique(arr) {
 
 module.exports = unique;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var unique     = require('./util/unique')
-  , trigger    = require('./util/trigger')
   , raf        = require('./util/raf')
   , isVisible  = require('./isVisible')
   , inViewport = require('./inViewport')
@@ -141,7 +129,7 @@ var proto = {
     if (targetArr.length) {
       !this._targets.length && this._subscribe();
       this._targets = unique(this._targets.concat(targetArr));
-      trigger(window, 'scroll');
+      this._handleScroll();
     }
 
     return this;
@@ -233,4 +221,4 @@ function create(callback, options) {
 
 module.exports = create;
 
-},{"./inViewport":4,"./isVisible":5,"./util/raf":6,"./util/trigger":7,"./util/unique":8}]},{},[1])
+},{"./inViewport":4,"./isVisible":5,"./util/raf":6,"./util/unique":7}]},{},[1])
