@@ -161,7 +161,7 @@ var proto = {
     if (targetArr.length) {
       !this._targets.length && this._subscribe();
       this._targets = unique(this._targets.concat(targetArr));
-      this._handleScroll();
+      processTargets.call(this);
     }
 
     return this;
@@ -185,7 +185,7 @@ var proto = {
 
 };
 
-function handleScroll() {
+function processTargets() {
   /*jshint validthis:true*/
   var i = this._targets.length
     , current;
@@ -221,7 +221,7 @@ function create(callback, options) {
   inst._targets = [];
   inst._flag = '__vspy' + Date.now();
   inst._handleScroll = raf.bind(window,
-      handleScroll.bind(inst));
+      processTargets.bind(inst));
 
   return inst;
 }
