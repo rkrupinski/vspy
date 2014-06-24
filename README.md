@@ -2,6 +2,8 @@ vspy
 ====
 A simple viewport spy.
 
+[![Build Status](https://travis-ci.org/rkrupinski/vspy.png)](https://travis-ci.org/rkrupinski/vspy)
+
 Usage
 -----
 Factory - accepts `2` parameters:

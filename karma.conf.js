@@ -4,8 +4,8 @@ module.exports = {
   browsers: [
     'Chrome',
     'Firefox',
-    'Opera',
-    'Safari'
+    // 'Opera',
+    // 'Safari'
   ],
   frameworks: [
     'jasmine'
