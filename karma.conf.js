@@ -2,7 +2,7 @@
 
 module.exports = {
   browsers: [
-    'Chrome',
+    // 'Chrome',
     'Firefox',
     // 'Opera',
     // 'Safari'
