@@ -37,6 +37,12 @@ Installation
 $ npm install vspy
 ```
 
+Test
+----
+```bash
+$ npm test
+```
+
 Browser support
 ---------------
 IE9+
