@@ -196,6 +196,7 @@ describe('vspy', function () {
       expect(cb.calls.mostRecent().args[0])
           .toBe(observables[0]);
 
+      window.scrollTo(0, 0);
       window.scrollTo(0, 100);
 
       setTimeout(function () {
@@ -231,10 +232,11 @@ describe('vspy', function () {
 
       expect(foo._unsubscribe).not.toHaveBeenCalled();
 
-      foo.observe('.js_observable')
+      foo.observe('.js_observable');
 
       // hack
       foo._targets.length = 0;
+      window.scrollTo(0, 0);
       window.scrollTo(0, 100);
 
       setTimeout(function () {
