@@ -5,7 +5,8 @@ var gulp = require('gulp')
   , karma = require('karma').server
   , clean = require('gulp-clean')
   , browserify = require('gulp-browserify')
-  , karmaConfig = require('./karma.conf');
+  , karmaConfig = require('./karma.conf')
+  , _ = require('underscore');
 
 gulp.task('jshint', function () {
   return gulp
@@ -28,7 +29,8 @@ gulp.task('cleanup', function () {
 });
 
 gulp.task('karma', function (done) {
-  karma.start(karmaConfig, done);
+  karma.start(_.extend({}, karmaConfig,
+      { singleRun: true }), done);
 });
 
 gulp.task('test', [

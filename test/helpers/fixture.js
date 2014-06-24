@@ -26,7 +26,7 @@ exports.load = function (file, done) {
   });
 };
 
-exports.reset = function () {
+exports.cleanup = function () {
   var container = document.querySelector('#test');
 
   container.parentNode.removeChild(container);

@@ -3,9 +3,9 @@
 module.exports = {
   browsers: [
     'Chrome',
-    // 'Firefox',
-    // 'Opera',
-    // 'Safari'
+    'Firefox',
+    'Opera',
+    'Safari'
   ],
   frameworks: [
     'jasmine'
@@ -21,6 +21,5 @@ module.exports = {
       served: true,
       included: false
     }
-  ],
-  singleRun: true
+  ]
 };
