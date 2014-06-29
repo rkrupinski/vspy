@@ -1,7 +1,7 @@
 'use strict';
 
 describe('vspy', function () {
-  var vspy = require('../index')
+  var vspy = require('..')
     , fixture = require('./helpers/fixture');
 
   describe('utils', function () {

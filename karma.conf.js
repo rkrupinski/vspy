@@ -5,7 +5,8 @@ module.exports = {
     // 'Chrome',
     'Firefox',
     // 'Opera',
-    // 'Safari'
+    // 'Safari',
+    // 'IE'
   ],
   frameworks: [
     'jasmine'
