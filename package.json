@@ -2,7 +2,6 @@
   "name": "vspy",
   "version": "0.0.5",
   "description": "A simple viewport spy.",
-  "main": "./lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/rkrupinski/vspy.git"
