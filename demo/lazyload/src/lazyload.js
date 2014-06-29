@@ -1,6 +1,6 @@
 'use strict';
 
-var vspy = require('../../../index')
+var vspy = require('../../..')
   , spy = vspy(callback, { offset: 150 });
 
 function callback(img) {

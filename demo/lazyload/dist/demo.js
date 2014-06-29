@@ -24,7 +24,7 @@ lazyload.observe('.js_lazyload');
 },{"./lazyload":2}],2:[function(require,module,exports){
 'use strict';
 
-var vspy = require('../../../index')
+var vspy = require('../../..')
   , spy = vspy(callback, { offset: 150 });
 
 function callback(img) {
@@ -46,7 +46,7 @@ function callback(img) {
 
 module.exports = spy; 
 
-},{"../../../index":3}],3:[function(require,module,exports){
+},{"../../..":3}],3:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./lib/vspy');
