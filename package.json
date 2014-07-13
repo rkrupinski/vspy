@@ -12,6 +12,9 @@
   ],
   "author": "Rafał Krupiński",
   "license": "MIT",
+  "dependencies": {
+    "dom-array": "0.0.1"
+  },
   "devDependencies": {
     "gulp": "^3.6.2",
     "gulp-browserify": "^0.5.0",

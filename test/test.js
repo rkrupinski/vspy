@@ -19,66 +19,10 @@ describe('vspy', function () {
 
     });
 
-    describe('.normalize()', function () {
-      var normalize = require('../lib/util/normalize');
-
-      it('should convert undefined to an array', function () {
-        var result = normalize();
-
-        expect(Array.isArray(result)).toBe(true);
-        expect(result.length).toBe(0);
-      });
-
-      it('should convert null to an array', function () {
-        var result = normalize(null);
-
-        expect(Array.isArray(result)).toBe(true);
-        expect(result.length).toBe(0);
-      });
-
-      it('shout convert a valid selector to an array',
-          function () {
-        var result = normalize('script');
-
-        expect(Array.isArray(result)).toBe(true);
-        expect(result.length).toBeGreaterThan(0);
-      });
-
-      it('should convert an invalid selector to an array',
-          function () {
-        var result = normalize('12<div>');
-
-        expect(Array.isArray(result)).toBe(true);
-        expect(result.length).toBe(0);
-      });
-
-      it('should convert a NodeList to an array', function () {
-        var result = normalize($$('script'));
-
-        expect(Array.isArray(result)).toBe(true);
-        expect(result.length).toBeGreaterThan(0);
-      });
-
-      it('should convert an Element to an array', function () {
-        var result = normalize($('script'));
-
-        expect(Array.isArray(result)).toBe(true);
-        expect(result.length).toBe(1);
-      });
-
-      it('should return the input unchanged, if it\'s an array',
-          function () {
-        var input = [document.createElement('div')];
-
-        expect(normalize(input)).toBe(input);
-      });
-
-    });
-
   });
 
   describe('.inViewport()', function () {
-    var inViewport = require('../lib/inViewport');
+    var inViewport = require('../lib/in-viewport');
 
     beforeEach(function (done) {
       fixture.load('inViewport.html', done);
@@ -105,7 +49,7 @@ describe('vspy', function () {
   });
 
   describe('.isVisible()', function () {
-    var isVisible = require('../lib/isVisible');
+    var isVisible = require('../lib/is-visible');
 
     beforeEach(function (done) {
       fixture.load('isVisible.html', done);
