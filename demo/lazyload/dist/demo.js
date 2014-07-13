@@ -76,36 +76,40 @@ module.exports = isVisible;
 },{}],6:[function(require,module,exports){
 'use strict';
 
-var slice = [].slice;
+var isVisible  = require('./is-visible')
+  , inViewport = require('./in-viewport');
 
-function normalize(target) {
-  var result = [];
+function process() {
+  /*jshint validthis:true*/
+  var i = this._targets.length
+    , current;
 
-  switch (true) {
-    case (typeof target === 'string'):
-      try {
-        result = slice.call(document.querySelectorAll(target));
-      } catch (err) {
-        // invalid selector
-      }
-      break;
-    case (target instanceof NodeList):
-      result = slice.call(target);
-      break;
-    case (target instanceof Element):
-      result.push(target);
-      break;
-    case Array.isArray(target):
-      result = target;
-      break;
+  while (i--) {
+    current = this._targets[i];
+
+    if (!isVisible(current)) {
+      continue;
+    }
+
+    if (!inViewport(current, this._options.offset)) {
+      continue;
+    }
+
+    Object.defineProperty(current, this._flag, {
+      value: true,
+      configurable: true
+    });
+
+    this._targets.splice(i, 1);
+    this._callback.call(null, current);
   }
 
-  return result;
+  !this._targets.length && this._unsubscribe();
 }
 
-module.exports = normalize;
+module.exports = process;
 
-},{}],7:[function(require,module,exports){
+},{"./in-viewport":4,"./is-visible":5}],7:[function(require,module,exports){
 'use strict';
 
 var raf = window.requestAnimationFrame ||
@@ -137,9 +141,8 @@ module.exports = unique;
 
 var unique     = require('./util/unique')
   , raf        = require('./util/raf')
-  , normalize  = require('./util/normalize')
-  , isVisible  = require('./isVisible')
-  , inViewport = require('./inViewport');
+  , process    = require('./process')
+  , domArray   = require('dom-array');
 
 var proto = {
 
@@ -154,21 +157,21 @@ var proto = {
   },
 
   observe: function (target) {
-    var targetArr = normalize(target).filter(function (el) {
+    var targetArr = domArray(target).filter(function (el) {
       return !el[this._flag];
     }, this);
 
     if (targetArr.length) {
       !this._targets.length && this._subscribe();
       this._targets = unique(this._targets.concat(targetArr));
-      processTargets.call(this);
+      process.call(this);
     }
 
     return this;
   },
 
   reset: function (target) {
-    normalize(target).forEach(function (el) {
+    domArray(target).forEach(function (el) {
       delete el[this._flag];
     }, this);
 
@@ -185,34 +188,6 @@ var proto = {
 
 };
 
-function processTargets() {
-  /*jshint validthis:true*/
-  var i = this._targets.length
-    , current;
-
-  while (i--) {
-    current = this._targets[i];
-
-    if (!isVisible(current)) {
-      continue;
-    }
-
-    if (!inViewport(current, this._options.offset)) {
-      continue;
-    }
-
-    Object.defineProperty(current, this._flag, {
-      value: true,
-      configurable: true
-    });
-
-    this._targets.splice(i, 1);
-    this._callback.call(null, current);
-  }
-
-  !this._targets.length && this._unsubscribe();
-}
-
 function create(callback, options) {
   var inst = Object.create(proto);
 
@@ -221,11 +196,73 @@ function create(callback, options) {
   inst._targets = [];
   inst._flag = '__vspy' + Date.now();
   inst._handleScroll = raf.bind(window,
-      processTargets.bind(inst));
+      process.bind(inst));
 
   return inst;
 }
 
 module.exports = create;
 
-},{"./inViewport":4,"./isVisible":5,"./util/normalize":6,"./util/raf":7,"./util/unique":8}]},{},[1])
+},{"./process":6,"./util/raf":7,"./util/unique":8,"dom-array":10}],10:[function(require,module,exports){
+'use strict';
+
+module.exports = require('./lib/convert');
+
+},{"./lib/convert":11}],11:[function(require,module,exports){
+'use strict';
+
+var parse = require('./parse')
+  , slice = [].slice;
+
+function convert(arg, ctx) {
+  var result = []
+    , query
+    , nodes;
+
+  switch (true) {
+    case (typeof arg === 'string'):
+      query = [];
+      nodes = [];
+
+      try {
+        query = (ctx || document).querySelectorAll(arg);
+      } catch (e) {
+        nodes = parse(arg);
+      }
+
+      query.length && (result = slice.call(query));
+      nodes.length && (result = nodes);
+      query = nodes = null;
+      break;
+    case (arg instanceof NodeList):
+      result = slice.call(arg);
+      break;
+    case (arg instanceof Element || arg === document ||
+        arg === window):
+      result.push(arg);
+      break;
+    case (Array.isArray(arg)):
+      result = arg;
+      break;
+    default:
+      break;
+  }
+
+  return result;
+}
+
+module.exports = convert;
+
+},{"./parse":12}],12:[function(require,module,exports){
+'use strict';
+
+function parse(str) {
+  var doc = document.implementation.createHTMLDocument('');
+
+  doc.body.innerHTML = str;
+  return [].slice.call(doc.body.children);
+}
+
+module.exports = parse;
+
+},{}]},{},[1])
