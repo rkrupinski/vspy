@@ -206,12 +206,7 @@ module.exports = create;
 },{"./process":6,"./util/raf":7,"./util/unique":8,"dom-array":10}],10:[function(require,module,exports){
 'use strict';
 
-module.exports = require('./lib/convert');
-
-},{"./lib/convert":11}],11:[function(require,module,exports){
-'use strict';
-
-var parse = require('./parse')
+var parse = require('parse-html')
   , slice = [].slice;
 
 function convert(arg, ctx) {
@@ -253,7 +248,7 @@ function convert(arg, ctx) {
 
 module.exports = convert;
 
-},{"./parse":12}],12:[function(require,module,exports){
+},{"parse-html":11}],11:[function(require,module,exports){
 'use strict';
 
 function parse(str) {
