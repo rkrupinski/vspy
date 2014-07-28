@@ -13,7 +13,7 @@
   "author": "Rafał Krupiński",
   "license": "MIT",
   "dependencies": {
-    "dom-array": "0.0.1"
+    "dom-array": "0.0.2"
   },
   "devDependencies": {
     "gulp": "^3.6.2",
