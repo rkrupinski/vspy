@@ -197,6 +197,28 @@ describe('vspy', function () {
 
   });
 
+  describe('.poke()', function () {
+
+    it('should trigger targets check', function () {
+      var cb = jasmine.createSpy('vspy callback')
+        , foo = vspy(cb)
+        , el = document.createElement('input');
+
+      foo.observe(el);
+
+      expect(cb.calls.count()).toEqual(0);
+
+      document.body.appendChild(el);
+
+      expect(cb.calls.count()).toEqual(0);
+
+      foo.poke();
+
+      expect(cb.calls.count()).toEqual(1);
+    });
+
+  });
+
   describe('.prune()', function () {
 
     beforeEach(function (done) {
