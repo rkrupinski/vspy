@@ -123,15 +123,19 @@ module.exports = raf;
 'use strict';
 
 function unique(arr) {
-  var result = []
-    , l = arr.length
-    , i;
+  var ret;
 
-  for (i = 0; i < l; i++) {
-    !~result.indexOf(arr[i]) && result.push(arr[i]);
+  if (arr.length < 2) {
+    return arr;
   }
 
-  return result;
+  ret = [];
+
+  for (var i = 0, l = arr.length; i < l; i++) {
+    !~ret.indexOf(arr[i]) && ret.push(arr[i]);
+  }
+
+  return ret;
 }
 
 module.exports = unique;
@@ -164,8 +168,20 @@ var proto = {
     if (targetArr.length) {
       !this._targets.length && this._subscribe();
       this._targets = unique(this._targets.concat(targetArr));
-      process.call(this);
+      this.poke();
     }
+
+    return this;
+  },
+
+  poke: function () {
+    process.call(this);
+  },
+
+  prune: function () {
+    this._targets = this._targets.filter(
+      // remove detached nodes
+      document.contains.bind(document));
 
     return this;
   },
@@ -174,14 +190,6 @@ var proto = {
     domArray(target).forEach(function (el) {
       delete el[this._flag];
     }, this);
-
-    return this;
-  },
-
-  prune: function () {
-    this._targets = this._targets.filter(
-      // remove detached nodes
-      document.contains.bind(document));
 
     return this;
   }
