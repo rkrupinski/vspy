@@ -132,13 +132,13 @@ var unique     = require('./util/unique')
 var proto = {
 
   _subscribe: function () {
-    window.addEventListener('scroll',
-        this._handleScroll);
+    (this._options.container || window).addEventListener(
+        'scroll', this._handleScroll);
   },
 
   _unsubscribe: function () {
-    window.removeEventListener('scroll',
-        this._handleScroll);
+    (this._options.container || window).removeEventListener(
+        'scroll', this._handleScroll);
   },
 
   observe: function (target) {
@@ -157,6 +157,8 @@ var proto = {
 
   poke: function () {
     process.call(this);
+
+    return this;
   },
 
   prune: function () {
