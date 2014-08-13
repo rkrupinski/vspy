@@ -217,6 +217,12 @@ describe('vspy', function () {
       expect(cb.calls.count()).toEqual(1);
     });
 
+    it('should be chainable', function () {
+      var foo = vspy(function () {});
+
+      expect(foo.poke()).toBe(foo);
+    });
+
   });
 
   describe('.prune()', function () {
